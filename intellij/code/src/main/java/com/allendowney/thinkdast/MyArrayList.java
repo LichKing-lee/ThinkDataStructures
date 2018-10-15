@@ -45,7 +45,16 @@ public class MyArrayList<T> implements List<T> {
 	@Override
 	public boolean add(T element) {
 		// TODO: FILL THIS IN!
-		return false;
+		if(array.length <= size) {
+			T[] newArray = (T[]) new Object[size * 2];
+			System.arraycopy(array, 0, newArray, 0, array.length);
+			array = newArray;
+		}
+
+		array[size] = element;
+		size++;
+
+		return true;
 	}
 
 	@Override
@@ -111,6 +120,16 @@ public class MyArrayList<T> implements List<T> {
 	@Override
 	public int indexOf(Object target) {
 		// TODO: FILL THIS IN!
+		for(int i = 0; i < size; i++) {
+			if(array[i] == target) {
+				return i;
+			}
+
+			if(array[i] != null && array[i].equals(target)) {
+				return i;
+			}
+		}
+
 		return -1;
 	}
 
@@ -182,7 +201,20 @@ public class MyArrayList<T> implements List<T> {
 	@Override
 	public T remove(int index) {
 		// TODO: FILL THIS IN!
-		return null;
+		T t = array[index];
+
+		T[] newArray = (T[]) new Object[array.length];
+
+		if(index == 0) {
+			System.arraycopy(array, 1, newArray, 0, array.length-1);
+		}else {
+			System.arraycopy(array, 0, newArray, 0, index);
+			System.arraycopy(array, index+1, newArray, index, array.length - index-1);
+		}
+		array = newArray;
+		size--;
+
+		return t;
 	}
 
 	@Override
@@ -202,7 +234,14 @@ public class MyArrayList<T> implements List<T> {
 	@Override
 	public T set(int index, T element) {
 		// TODO: FILL THIS IN!
-		return null;
+		if(size <= index) {
+			throw new IndexOutOfBoundsException();
+		}
+
+		T t = array[index];
+		array[index] = element;
+
+		return t;
 	}
 
 	@Override
